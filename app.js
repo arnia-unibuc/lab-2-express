@@ -1,20 +1,63 @@
 const express = require('express');
-const models = require('./models');
-
 const app = express();
 
-app.get('/', async (req, res) => {
-    const users = await models.User.findAll();
-    res.send(users);
-});
+/*
+    Definiti o ruta de tip GET numita `/chat-log`.
 
-app.post('/users', async (req, res) => {
-    const user = await models.User.create({
-        name:"Gogu",
-        email:"Borala@test.com"
-    });
+    Endpoint-ul trebuie sa returneze un raspuns de tip JSON cu urmatorul format:
+        {
+            "data": [
+                {
+                    "userId": 123,
+                    "message": "mesaj"
+                },
+                ...
+            ]
+        }
 
-    res.send('ok');
-})
+    Datele se vor citi din fisierul history.txt
+*/
+
+// ...
+
+/* 
+    Definiti o ruta de tip GET numita `/history` care sa accepte un segment dinamic (Ex: `/history/1986`)
+    ce reprezinta un id de user.
+
+    Raspunsul trebuie sa contina doar mesajele ce apartin user id-ului pasat sub forma:
+    {
+        "data": [
+            {
+                "userId": "123",
+                "message": "mesaj"
+            },
+        ]
+    }
+
+*/
+
+// ...
+
+/*
+    Definiti o ruta de tip POST denumita `/new-message`.
+    
+    Aceasta accepta un body de tip JSON cu urmatoarea forma:
+    {
+        "userId": "123",
+        "message": "mesaj"
+    }
+
+    Folosind aceste date, adaugati in fisierul `history.txt` mesajul sub forma:
+
+    `<userId>:<mesaj>\n`
+
+    Raspunsul trebuie sa fie de forma:
+
+    {
+        "status": "ok"
+    }
+*/
+
+// ...
 
 module.exports = app;

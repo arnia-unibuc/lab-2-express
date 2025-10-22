@@ -8,8 +8,8 @@ describe('E1', () => {
     
         return Promise.all([
             server.get('/chat-log').then(response => expect(response.statusCode).toBe(200)),
-            server.get('/history/123').then(response => expect(response.statusCode).toBe(200)),
-            server.post('/new-message').then(response => expect(response.statusCode).toBe(200))
+            server.get('/history/7342').then(response => expect(response.statusCode).toBe(200)),
+            server.post('/new-message').send({userId: '1234', message:'test'}).then(response => expect(response.statusCode).toBe(200))
         ]);
     });
 })
@@ -21,13 +21,14 @@ describe('E2', () => {
             .get('/chat-log')
             .then(response => {
                 const body = response.body;
+                const content = fs.readFileSync("history.txt")
                 const numberOfMessages = fs
-                    .readFileSync('./history.txt')
+                    .readFileSync('history.txt')
                     .toString()
                     .split('\n')
                     .filter(message => !!message).length;
-    
-                expect(body.data.length).toBe(numberOfMessages)
+                
+                expect(body.length).toBe(numberOfMessages)
                 expect(response.statusCode).toBe(200)
     
             })
@@ -40,7 +41,7 @@ describe('E3', () => {
         return server
             .get('/history/7342')
             .then(response => {
-                const messages = response.body.data;
+                const messages = response.body;
                 const allMessagesContainOnlyOneUser = messages.every((message) => message.userId === "7342")
                 expect(messages.length).toBeGreaterThan(0);
                 expect(allMessagesContainOnlyOneUser).toBe(true);

@@ -8,7 +8,7 @@ const app = express();
         {
             "data": [
                 {
-                    "userId": 123,
+                    "userId": "123",
                     "message": "mesaj"
                 },
                 ...

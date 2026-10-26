@@ -2,6 +2,10 @@ const request = require('supertest');
 const app = require('./app');
 const fs = require('fs');
 
+// Testele adauga mesaje in history.txt; il readucem la starea initiala dupa rulare
+const originalHistory = fs.readFileSync('history.txt');
+afterAll(() => fs.writeFileSync('history.txt', originalHistory));
+
 describe('E1', () => {
     it("Should have all the routes declared", () => {
         const server = request(app)
@@ -20,7 +24,7 @@ describe('E2', () => {
         return server
             .get('/chat-log')
             .then(response => {
-                const body = response.body;
+                const body = response.body.data;
                 const content = fs.readFileSync("history.txt")
                 const numberOfMessages = fs
                     .readFileSync('history.txt')
@@ -41,7 +45,7 @@ describe('E3', () => {
         return server
             .get('/history/7342')
             .then(response => {
-                const messages = response.body;
+                const messages = response.body.data;
                 const allMessagesContainOnlyOneUser = messages.every((message) => message.userId === "7342")
                 expect(messages.length).toBeGreaterThan(0);
                 expect(allMessagesContainOnlyOneUser).toBe(true);
